@@ -8,6 +8,20 @@ import { Button } from "./components/ui/button";
 function App() {
   const [count, setCount] = useState(0);
 
+  function handleClick() {
+    console.log("clicked");
+    fetch("/counter", {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then(() => {
+        console.log("fetching counter");
+        fetch("/counter")
+          .then((res) => res.json())
+          .then((data) => setCount(data.count))
+      });
+  }
+
   return (
     <div className="App">
       <div>
@@ -20,9 +34,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <Button onClick={() => setCount((count) => count + 1)}>
-          counter is {count}
-        </Button>
+        <Button onClick={handleClick}>counter is {count}</Button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
