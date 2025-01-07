@@ -4,22 +4,40 @@ import { useState } from "react";
 
 import reactLogo from "./assets/react.svg";
 import { Button } from "./components/ui/button";
+import { QueryClient, QueryClientProvider, useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+// Create a client
+const queryClient = new QueryClient();
+
+// Wrap the App component with QueryClientProvider
+function AppWrapper() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  );
+}
 
 function App() {
-  const [count, setCount] = useState(0);
+  const queryClient = useQueryClient();
+
+  // Query for fetching counter
+  const { data: counterData } = useQuery({
+    queryKey: ['counter'],
+    queryFn: () => fetch('/counter').then(res => res.json()),
+  });
+
+  // Mutation for updating counter
+  const { mutate } = useMutation({
+    mutationFn: () => fetch('/counter', { method: 'POST' }).then(res => res.json()),
+    onSuccess: () => {
+      // Invalidate and refetch the counter query
+      queryClient.invalidateQueries({ queryKey: ['counter'] });
+    },
+  });
 
   function handleClick() {
-    console.log("clicked");
-    fetch("/counter", {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then(() => {
-        console.log("fetching counter");
-        fetch("/counter")
-          .then((res) => res.json())
-          .then((data) => setCount(data.count))
-      });
+    mutate();
   }
 
   return (
@@ -34,7 +52,9 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <Button onClick={handleClick}>counter is {count}</Button>
+        <Button onClick={handleClick}>
+          counter is {counterData?.count ?? 0}
+        </Button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
@@ -46,4 +66,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppWrapper;
