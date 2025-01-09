@@ -1,15 +1,15 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { queryClient } from "../lib/queryClient";
-
+import { trpc } from "../lib/trpc";
 export default function Counter() {
   const { data: counterData } = useQuery({
     queryKey: ['counter'],
-    queryFn: () => fetch('/counter').then(res => res.json()),
+    queryFn: () => trpc.getCounter.query(),
   });
 
   const { mutate } = useMutation({
-    mutationFn: () => fetch('/counter', { method: 'POST' }).then(res => res.json()),
+    mutationFn: () => trpc.incrementCounter.mutate(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['counter'] });
     },

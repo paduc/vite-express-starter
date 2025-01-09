@@ -1,23 +1,30 @@
 import express from "express";
 import ViteExpress from "vite-express";
-
+import { createExpressMiddleware } from '@trpc/server/adapters/express';
 const app = express();
 
-app.get("/hello", (_, res) => {
-  res.send("Hello Vite + React + TypeScript!");
-});
+import { router, publicProcedure } from './trpc.js';
+ 
 let counter = 0;
 
-app.post("/counter", (_, res) => {
-  counter += 1;
-  res.json({ count: counter });
-}); 
-
-app.get("/counter", (_, res) => {
-  res.json({ count: counter });
+const appRouter = router({
+  getCounter: publicProcedure
+    .query(() => ({ count: counter })),
+    
+  incrementCounter: publicProcedure
+    .mutation(() => {
+      counter += 1;
+      return { count: counter };
+    })
 });
 
+// Export type router type signature,
+// NOT the router itself.
+export type AppRouter = typeof appRouter;
 
+
+// Add tRPC middleware
+app.use('/trpc', createExpressMiddleware({ router: appRouter }));
 
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000..."),
