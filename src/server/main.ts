@@ -26,6 +26,6 @@ export type AppRouter = typeof appRouter;
 // Add tRPC middleware
 app.use('/trpc', createExpressMiddleware({ router: appRouter }));
 
-ViteExpress.listen(app, 3000, () =>
+ViteExpress.listen(app, Number(process.env.PORT) || 3000, () =>
   console.log("Server is listening on port 3000..."),
 );
