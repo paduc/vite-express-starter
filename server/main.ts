@@ -12,12 +12,12 @@ if (isProduction) {
   console.log('isProduction');
 
   const assetsPath = '../app/dist'
-  let files = fs.readdirSync(assetsPath)
-  for(const file of files){
-    console.log(assetsPath, file)
-  }
+  // let files = fs.readdirSync(assetsPath)
+  // for(const file of files){
+  //   console.log(assetsPath, file)
+  // }
 
-  files = fs.readdirSync('../')
+  let files = fs.readdirSync('../')
   for(const file of files){
     console.log('../' ,file)
   }
