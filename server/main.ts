@@ -27,7 +27,10 @@ if (isProduction) {
     console.log('../' ,file)
   }
   
-
+  files = fs.readdirSync('../app')
+  for(const file of files){
+    console.log('../app' ,file)
+  }
   app.use(express.static(assetsPath));
 
   app.get('*', (req, res) => {
