@@ -1,0 +1,1 @@
+release: echo "release" && cd ../app && npm install -g vite && yarn install && yarn build
