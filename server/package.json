@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "main.ts",
   "scripts": {
-    "start": "NODE_ENV=production pwd && tsx watch main.ts",
+    "start": "NODE_ENV=production tsx main.ts",
     "dev": "NODE_ENV=development tsx watch main.ts"
   },
   "dependencies": {

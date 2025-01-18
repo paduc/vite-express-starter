@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "workspaces": ["app", "server"],
+  "scripts": {
+    "build": "yarn workspace app build",
+    "start": "yarn workspace server start"
+  }
+}
