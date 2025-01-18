@@ -11,7 +11,7 @@ app.get('/test', (req, res) => {
 if (isProduction) {
   console.log('isProduction');
 
-  const assetsPath = './app/app/dist'
+  const assetsPath = '../app/dist'
   // let files = fs.readdirSync(assetsPath)
   // for(const file of files){
   //   console.log(assetsPath, file)

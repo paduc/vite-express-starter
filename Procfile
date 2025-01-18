@@ -1,0 +1,1 @@
+web: echo "release" && cd app && yarn install && yarn build && cd ../server && yarn install && yarn start
